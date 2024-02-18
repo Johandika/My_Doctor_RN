@@ -8,6 +8,7 @@ import {
   RatedDoctor,
 } from '../../components';
 import {colors, fonts} from '../../utils';
+import {dataDoctor, dataDoctorCategory} from '../../assets';
 
 const Doctor = () => {
   return (
@@ -25,19 +26,29 @@ const Doctor = () => {
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={styles.category}>
                 <Gap size={32} direction="horizontal" />
-                <DoctorCategory />
-                <DoctorCategory />
-                <DoctorCategory />
-                <DoctorCategory />
+                {dataDoctorCategory.map(category => (
+                  <DoctorCategory
+                    key={category.id}
+                    category={category.category}
+                    picture={category.picture}
+                  />
+                ))}
+
                 <Gap size={22} direction="horizontal" />
               </View>
             </ScrollView>
           </View>
           <View style={styles.wrapperSection}>
             <Text style={styles.sectionLabel}>Top rated Doctors</Text>
-            <RatedDoctor />
-            <RatedDoctor />
-            <RatedDoctor />
+            {dataDoctor.map(doctor => (
+              <RatedDoctor
+                key={doctor.id}
+                category={doctor.category}
+                name={doctor.name}
+                picture={doctor.picture}
+              />
+            ))}
+
             <Text style={styles.sectionLabel}>Good News</Text>
           </View>
           <NewsItem />

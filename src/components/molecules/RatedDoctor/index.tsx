@@ -1,15 +1,21 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image, ImageSourcePropType} from 'react-native';
 import React from 'react';
-import {IconStar, dummyUser} from '../../../assets';
+import {IconStar} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const RatedDoctor = () => {
+interface ListDoctorProps {
+  category: string;
+  name: string;
+  picture: ImageSourcePropType;
+}
+
+const RatedDoctor: React.FC<ListDoctorProps> = ({name, category, picture}) => {
   return (
     <View style={styles.container}>
-      <Image source={dummyUser} style={styles.avatar} />
+      <Image source={picture} style={styles.avatar} />
       <View style={styles.profile}>
-        <Text style={styles.name}>Alexa Rachel</Text>
-        <Text style={styles.category}>Pediatrician</Text>
+        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.category}>{category}</Text>
       </View>
       <View style={styles.rate}>
         <IconStar width={12} height={12} />

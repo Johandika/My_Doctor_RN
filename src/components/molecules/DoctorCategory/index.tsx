@@ -1,14 +1,28 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Image} from 'react-native';
 import React from 'react';
-import {ILcatdokumum} from '../../../assets';
+import {ILcatdokobat, ILcatdokpsikiater, ILcatdokumum} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const DoctorCategory = () => {
+interface DoctorCategoryProps {
+  category: string;
+  picture: string;
+}
+
+const DoctorCategory: React.FC<DoctorCategoryProps> = ({category, picture}) => {
+  const Icon = () => {
+    if (picture === 'ILcatdokumum')
+      return <ILcatdokumum style={styles.illustration} />;
+    if (picture === 'ILcatdokpsikiater')
+      return <ILcatdokpsikiater style={styles.illustration} />;
+    if (picture === 'ILcatdokobat')
+      return <ILcatdokobat style={styles.illustration} />;
+  };
   return (
     <View style={styles.container}>
-      <ILcatdokumum style={styles.illustration} />
+      {/* <ILcatdokumum style={styles.illustration} /> */}
+      <Icon />
       <Text style={styles.label}>Saya butuh</Text>
-      <Text style={styles.category}>Dokter umum</Text>
+      <Text style={styles.category}>{category}</Text>
     </View>
   );
 };
@@ -25,7 +39,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 130,
   },
-  illustration: {marginBottom: 28},
+  illustration: {marginBottom: 28, width: 46, height: 46},
   label: {
     fontSize: 12,
     fontFamily: fonts.primary[300],
