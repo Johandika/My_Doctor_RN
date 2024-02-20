@@ -1,5 +1,3 @@
-import {ILcatdokobat, ILcatdokpsikiater, ILcatdokumum} from '../../../assets';
-
 const dataDoctorCategory = [
   {
     id: 1,

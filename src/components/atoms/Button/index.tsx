@@ -1,22 +1,36 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, ViewStyle} from 'react-native';
+import {
+  GestureResponderEvent,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ViewStyle,
+} from 'react-native';
 import {colors} from '../../../utils';
+import IconOnly from './IconOnly';
+
+type IconType = 'back-dark' | 'back-light' | undefined;
 
 interface ButtonProps {
-  type?: 'default' | 'secondary';
-  title: string;
-  onPress: () => void;
+  type?: 'default' | 'secondary' | 'icon-only';
+  title?: string;
+  onPress: (event: GestureResponderEvent) => void;
   style?: ViewStyle;
+  icon: IconType;
 }
 
 const Button: React.FC<ButtonProps> = ({
   type = 'default',
   title,
   onPress,
+  icon,
   style,
 }) => {
   const styles = getStyles(type, style);
 
+  if (type === 'icon-only') {
+    return <IconOnly icon={icon} onPress={onPress} />;
+  }
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <Text style={styles.text}>{title}</Text>
@@ -24,7 +38,10 @@ const Button: React.FC<ButtonProps> = ({
   );
 };
 
-const getStyles = (type: 'default' | 'secondary', style?: ViewStyle) => {
+const getStyles = <T extends ButtonProps>(
+  type: T['type'],
+  style?: ViewStyle,
+) => {
   return StyleSheet.create({
     container: {
       paddingVertical: 12,

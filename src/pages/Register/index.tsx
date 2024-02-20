@@ -5,10 +5,10 @@ import {Header} from '../../components/molecules';
 import {colors} from '../../utils';
 import {Gap} from '../../components/atoms';
 
-const Register = () => {
+const Register = ({navigation}: any) => {
   return (
     <View style={styles.page}>
-      <Header />
+      <Header title="Daftar" onPress={() => navigation.goBack()} />
       <View style={styles.content}>
         <Input label="Full Name" />
         <Gap size={24} />

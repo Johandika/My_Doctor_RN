@@ -1,18 +1,29 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image, ImageSourcePropType} from 'react-native';
 import React from 'react';
-import {doctor2} from '../../../assets';
 import {colors, fonts} from '../../../utils';
+import {IconChevronRight} from '../../../assets';
 
-const ListDoctor = () => {
+interface ListDoctorProps {
+  name: string;
+  description: string;
+  picture: ImageSourcePropType;
+  type?: 'next';
+}
+
+const ListDoctor: React.FC<ListDoctorProps> = ({
+  picture,
+  name,
+  description,
+  type,
+}) => {
   return (
     <View style={styles.container}>
-      <Image source={doctor2} style={styles.avatar} />
-      <View>
-        <Text style={styles.name}>ListDoctor</Text>
-        <Text style={styles.description}>
-          Baik Ibu, terima kasih banyak atas wakt...
-        </Text>
+      <Image source={picture} style={styles.avatar} />
+      <View style={styles.wrapperText}>
+        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.description}>{description}</Text>
       </View>
+      {type === 'next' && <IconChevronRight />}
     </View>
   );
 };
@@ -26,7 +37,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
+  wrapperText: {flex: 1},
   avatar: {width: 46, height: 46, borderRadius: 46 / 2, marginRight: 12},
   name: {
     fontSize: 16,

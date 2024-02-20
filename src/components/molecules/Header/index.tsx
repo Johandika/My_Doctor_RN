@@ -1,14 +1,25 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {GestureResponderEvent, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {IconChevronLeft} from '../../../assets/icon';
-import {Gap} from '../../atoms';
+import {Button, Gap} from '../../atoms';
 import {colors} from '../../../utils';
 
-const Header = () => {
+interface HeaderProps {
+  title: string;
+  onPress: (event: GestureResponderEvent) => void;
+  type: 'dark' | 'light';
+}
+
+const Header: React.FC<HeaderProps> = ({title, onPress, type = 'light'}) => {
+  const styles = getStyles(type);
+
   return (
     <View style={styles.container}>
-      <IconChevronLeft />
-      <Text style={styles.text}>Header</Text>
+      <Button
+        type="icon-only"
+        icon={type === 'dark' ? 'back-light' : 'back-dark'}
+        onPress={onPress}
+      />
+      <Text style={styles.text}>{title}</Text>
       <Gap size={24} direction="horizontal" />
     </View>
   );
@@ -16,19 +27,23 @@ const Header = () => {
 
 export default Header;
 
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 16,
-    paddingVertical: 30,
-    backgroundColor: colors.white,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  text: {
-    flex: 1,
-    fontFamily: 'Nunito-SemiBold',
-    fontSize: 20,
-    color: colors.text.primary,
-    textAlign: 'center',
-  },
-});
+const getStyles = <T extends HeaderProps>(type: T['type']) => {
+  return StyleSheet.create({
+    container: {
+      paddingHorizontal: 16,
+      paddingVertical: 30,
+      backgroundColor: type === 'dark' ? colors.secondary : colors.white,
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderBottomLeftRadius: type === 'dark' ? 20 : 0,
+      borderBottomRightRadius: type === 'dark' ? 20 : 0,
+    },
+    text: {
+      flex: 1,
+      fontFamily: 'Nunito-SemiBold',
+      fontSize: 20,
+      color: type === 'dark' ? colors.white : colors.text.primary,
+      textAlign: 'center',
+    },
+  });
+};

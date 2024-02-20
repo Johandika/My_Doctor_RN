@@ -1,18 +1,24 @@
-import {StyleSheet, Text, View, ViewStyle} from 'react-native';
+import {
+  GestureResponderEvent,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import React from 'react';
 
 interface LinkProps {
   title: string;
   size: number;
   align?: 'auto' | 'left' | 'right' | 'center' | 'justify' | undefined;
+  onPress: (event: GestureResponderEvent) => void;
 }
 
-const Link: React.FC<LinkProps> = ({title, size, align}) => {
+const Link: React.FC<LinkProps> = ({title, size, align, onPress}) => {
   const styles = getStyles(size, align);
   return (
-    <View>
+    <TouchableOpacity onPress={onPress}>
       <Text style={styles.text}>{title}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 

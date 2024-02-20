@@ -10,7 +10,7 @@ import {
 import {colors, fonts} from '../../utils';
 import {dataDoctor, dataDoctorCategory} from '../../assets';
 
-const Doctor = () => {
+const Doctor = ({navigation}: any) => {
   return (
     <View style={styles.page}>
       <View style={styles.content}>
@@ -31,6 +31,7 @@ const Doctor = () => {
                     key={category.id}
                     category={category.category}
                     picture={category.picture}
+                    onPress={() => navigation.navigate('ChooseDoctor')}
                   />
                 ))}
 

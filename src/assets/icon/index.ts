@@ -1,4 +1,6 @@
 import IconChevronLeft from './ic-LeftActionable.svg';
+import IconChevronRight from './ic-RightActionable.svg';
+import IconChevronLeftWhite from './ic-LeftActionableWhite.svg';
 import IconAddPhoto from './ic-add-photo.svg';
 import ILemptyprofile from './ic-remove-photo.svg';
 import IconDoctor from './doctor.svg';
@@ -19,5 +21,7 @@ export {
   IconHospitalActive,
   IconMessages,
   IconMessagesActive,
+  IconChevronLeftWhite,
   IconStar,
+  IconChevronRight,
 };
