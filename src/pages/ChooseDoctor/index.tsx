@@ -17,18 +17,21 @@ const ChooseDoctor = ({navigation}: any) => {
         name={'Ronald Sued'}
         description={'Laki-laki'}
         type={'next'}
+        onPress={() => navigation.navigate('Chatting')}
       />
       <ListDoctor
         picture={doctor2}
         name={'Sheirina Sheirin'}
         description={'Perempuan'}
         type={'next'}
+        onPress={() => navigation.navigate('Chatting')}
       />
       <ListDoctor
         picture={doctor3}
         name={'Putradi Sumar'}
         description={'Laki-laki'}
         type={'next'}
+        onPress={() => navigation.navigate('Chatting')}
       />
     </View>
   );

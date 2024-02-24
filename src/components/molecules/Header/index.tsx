@@ -6,12 +6,14 @@ import {colors} from '../../../utils';
 interface HeaderProps {
   title: string;
   onPress: (event: GestureResponderEvent) => void;
-  type: 'dark' | 'light';
+  type?: 'dark' | 'light' | 'dark-profile';
 }
 
 const Header: React.FC<HeaderProps> = ({title, onPress, type = 'light'}) => {
   const styles = getStyles(type);
 
+  if (type === 'dark-profile') {
+  }
   return (
     <View style={styles.container}>
       <Button

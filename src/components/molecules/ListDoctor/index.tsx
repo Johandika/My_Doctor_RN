@@ -1,4 +1,12 @@
-import {StyleSheet, Text, View, Image, ImageSourcePropType} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ImageSourcePropType,
+  TouchableOpacity,
+  GestureResponderEvent,
+} from 'react-native';
 import React from 'react';
 import {colors, fonts} from '../../../utils';
 import {IconChevronRight} from '../../../assets';
@@ -8,6 +16,7 @@ interface ListDoctorProps {
   description: string;
   picture: ImageSourcePropType;
   type?: 'next';
+  onPress: (event: GestureResponderEvent) => void;
 }
 
 const ListDoctor: React.FC<ListDoctorProps> = ({
@@ -15,16 +24,17 @@ const ListDoctor: React.FC<ListDoctorProps> = ({
   name,
   description,
   type,
+  onPress,
 }) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <Image source={picture} style={styles.avatar} />
       <View style={styles.wrapperText}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.description}>{description}</Text>
       </View>
       {type === 'next' && <IconChevronRight />}
-    </View>
+    </TouchableOpacity>
   );
 };
 
