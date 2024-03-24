@@ -1,17 +1,28 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  GestureResponderEvent,
+} from 'react-native';
 import React from 'react';
 import {dummyUser} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const HomeProfile = () => {
+interface HomeProfileProps {
+  onPress: (event: GestureResponderEvent) => void;
+}
+
+const HomeProfile: React.FC<HomeProfileProps> = ({onPress}) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <Image source={dummyUser} style={styles.image} />
       <View>
         <Text style={styles.name}>Shayna Melinda</Text>
         <Text style={styles.profession}>Product Designer</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

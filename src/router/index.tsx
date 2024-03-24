@@ -10,9 +10,12 @@ import {
   Messages,
   Register,
   Splash,
+  UpdateProfile,
   UploadPhoto,
+  UserProfile,
+  GetStarted,
+  DoctorProfile,
 } from '../pages';
-import {GetStarted} from '../pages';
 import {BottomNavigator} from '../components';
 
 const Stack = createStackNavigator();
@@ -82,6 +85,21 @@ const Router = () => {
       <Stack.Screen
         name="Chatting"
         component={Chatting}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="UserProfile"
+        component={UserProfile}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="UpdateProfile"
+        component={UpdateProfile}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="DoctorProfile"
+        component={DoctorProfile}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

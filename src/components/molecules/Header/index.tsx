@@ -2,17 +2,27 @@ import {GestureResponderEvent, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {Button, Gap} from '../../atoms';
 import {colors} from '../../../utils';
+import DarkProfile from './DarkProfile';
 
 interface HeaderProps {
   title: string;
   onPress: (event: GestureResponderEvent) => void;
   type?: 'dark' | 'light' | 'dark-profile';
+  description?: string;
 }
 
-const Header: React.FC<HeaderProps> = ({title, onPress, type = 'light'}) => {
+const Header: React.FC<HeaderProps> = ({
+  title,
+  onPress,
+  type = 'light',
+  description,
+}) => {
   const styles = getStyles(type);
 
   if (type === 'dark-profile') {
+    return (
+      <DarkProfile title={title} description={description} onPress={onPress} />
+    );
   }
   return (
     <View style={styles.container}>

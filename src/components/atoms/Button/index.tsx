@@ -8,15 +8,17 @@ import {
 } from 'react-native';
 import {colors} from '../../../utils';
 import IconOnly from './IconOnly';
+import BtnIconSend from './BtnIconSend';
 
 type IconType = 'back-dark' | 'back-light' | undefined;
 
 interface ButtonProps {
-  type?: 'default' | 'secondary' | 'icon-only';
+  type?: 'default' | 'secondary' | 'icon-only' | 'btn-icon-send';
   title?: string;
   onPress: (event: GestureResponderEvent) => void;
   style?: ViewStyle;
-  icon: IconType;
+  icon?: IconType;
+  disable?: boolean | undefined;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -25,12 +27,18 @@ const Button: React.FC<ButtonProps> = ({
   onPress,
   icon,
   style,
+  disable,
 }) => {
   const styles = getStyles(type, style);
+
+  if (type === 'btn-icon-send') {
+    return <BtnIconSend disable={disable || false} />;
+  }
 
   if (type === 'icon-only') {
     return <IconOnly icon={icon} onPress={onPress} />;
   }
+
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <Text style={styles.text}>{title}</Text>

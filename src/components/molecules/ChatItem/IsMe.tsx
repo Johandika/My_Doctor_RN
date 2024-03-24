@@ -1,22 +1,21 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {colors, fonts} from '../../../utils';
-import IsMe from './IsMe';
-import Others from './Others';
 
-interface ChatItemProps {
-  isMe?: boolean;
-}
-
-const ChatItem: React.FC<ChatItemProps> = ({isMe}) => {
-  if (isMe) {
-    return <IsMe />;
-  } else {
-    return <Others />;
-  }
+const IsMe = () => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.chatContent}>
+        <Text style={styles.text}>
+          Ibu dokter, apakah memakan jeruk setiap hari itu buruk?
+        </Text>
+      </View>
+      <Text style={styles.date}>4.20 AM</Text>
+    </View>
+  );
 };
 
-export default ChatItem;
+export default IsMe;
 
 const styles = StyleSheet.create({
   container: {

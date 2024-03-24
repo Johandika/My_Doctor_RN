@@ -9,26 +9,50 @@ import {
 } from 'react-native';
 import React from 'react';
 import {colors, fonts} from '../../../utils';
-import {IconChevronRight} from '../../../assets';
+import {
+  IconChevronRight,
+  IconEditProfile,
+  IconHelp,
+  IconLanguage,
+  IconRate,
+} from '../../../assets';
 
-interface ListDoctorProps {
+interface ListProps {
   name: string;
   description: string;
-  picture: ImageSourcePropType;
+  picture?: ImageSourcePropType;
   type?: 'next';
   onPress: (event: GestureResponderEvent) => void;
+  icon?: 'edit-profile' | 'language' | 'rate' | 'help';
 }
 
-const ListDoctor: React.FC<ListDoctorProps> = ({
+const List: React.FC<ListProps> = ({
   picture,
   name,
   description,
   type,
   onPress,
+  icon,
 }) => {
+  const Icon = () => {
+    if (icon === 'edit-profile') {
+      return <IconEditProfile width={20} height={20} fill={colors.primary} />;
+    }
+    if (icon === 'language') {
+      return <IconLanguage width={20} height={20} fill={colors.primary} />;
+    }
+    if (icon === 'rate') {
+      return <IconRate width={20} height={20} fill={colors.primary} />;
+    }
+    if (icon === 'help') {
+      return <IconHelp width={20} height={20} fill={colors.primary} />;
+    }
+    return <IconEditProfile />;
+  };
+
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Image source={picture} style={styles.avatar} />
+      {icon ? <Icon /> : <Image source={picture} style={styles.avatar} />}
       <View style={styles.wrapperText}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.description}>{description}</Text>
@@ -38,7 +62,7 @@ const ListDoctor: React.FC<ListDoctorProps> = ({
   );
 };
 
-export default ListDoctor;
+export default List;
 
 const styles = StyleSheet.create({
   container: {
@@ -49,8 +73,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  wrapperText: {flex: 1},
-  avatar: {width: 46, height: 46, borderRadius: 46 / 2, marginRight: 12},
+  wrapperText: {flex: 1, marginLeft: 16},
+  avatar: {width: 46, height: 46, borderRadius: 46 / 2},
   name: {
     fontSize: 16,
     fontFamily: fonts.primary.normal,

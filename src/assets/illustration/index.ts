@@ -4,6 +4,7 @@ import ILcatdokpsikiater from './cat-dok-psikiater.svg';
 import ILcatdokumum from './cat-dok-umum.svg';
 import ILcatdokobat from './cat-dok-obat.svg';
 import ILhospitalbg from './hospital-bg.jpg';
+import ILemptyprofileImage from './empty-profile.png';
 
 export {
   ILmydoctorlogo,
@@ -12,4 +13,5 @@ export {
   ILcatdokpsikiater,
   ILdoctorsplash,
   ILhospitalbg,
+  ILemptyprofileImage,
 };

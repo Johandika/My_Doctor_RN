@@ -1,8 +1,4 @@
-import {
-  GestureResponderEvent,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import {GestureResponderEvent, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {IconChevronLeft, IconChevronLeftWhite} from '../../../assets/icon';
 

@@ -1,19 +1,20 @@
 import {StyleSheet, Image, View, Text} from 'react-native';
 import React from 'react';
 import {Button, Gap, Header, Link} from '../../components';
-import {IconAddPhoto, ILemptyprofile} from '../../assets';
+import {ILemptyprofileImage, IconAddPhoto} from '../../assets';
 import {colors, fonts} from '../../utils';
 
-const UploadPhoto = () => {
+const UploadPhoto = ({navigation}) => {
   return (
     <View style={styles.page}>
-      <Header title="Upload Photo" />
+      <Header title="Upload Photo" onPress={() => navigation.goBack()} />
       <View style={styles.content}>
         <View style={styles.profileContent}>
           <View style={styles.avatarWrapper}>
-            <Image source={ILemptyprofile} style={styles.avatar} />
+            <Image source={ILemptyprofileImage} style={styles.avatar} />
+
             <View style={styles.iconContainer}>
-              <IconAddPhoto width={30} height={30} style={styles.icon} />
+              <IconAddPhoto width={30} height={30} />
             </View>
           </View>
           <Text style={styles.name}>Shayna Melinda</Text>
@@ -22,7 +23,12 @@ const UploadPhoto = () => {
         <View>
           <Button title="Upload and Continue" />
           <Gap size={20} />
-          <Link title="Skip for this" size={16} align="center" />
+          <Link
+            title="Skip for this"
+            size={16}
+            align="center"
+            onPress={() => navigation.replace('MainApp')}
+          />
         </View>
       </View>
     </View>

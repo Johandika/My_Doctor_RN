@@ -17,7 +17,7 @@ const Doctor = ({navigation}: any) => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.wrapperSection}>
             <Gap size={30} />
-            <HomeProfile />
+            <HomeProfile onPress={() => navigation.navigate('UserProfile')} />
             <Text style={styles.welcome}>
               Mau konsultasi dengan siapa hari ini?
             </Text>
@@ -47,6 +47,7 @@ const Doctor = ({navigation}: any) => {
                 category={doctor.category}
                 name={doctor.name}
                 picture={doctor.picture}
+                onPress={() => navigation.navigate('DoctorProfile')}
               />
             ))}
 

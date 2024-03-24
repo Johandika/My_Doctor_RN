@@ -1,17 +1,31 @@
-import {StyleSheet, Text, View, Image, ImageSourcePropType} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ImageSourcePropType,
+  TouchableOpacity,
+  GestureResponderEvent,
+} from 'react-native';
 import React from 'react';
 import {IconStar} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-interface ListDoctorProps {
+interface RatedDoctor {
   category: string;
   name: string;
   picture: ImageSourcePropType;
+  onPress: (event: GestureResponderEvent) => void;
 }
 
-const RatedDoctor: React.FC<ListDoctorProps> = ({name, category, picture}) => {
+const RatedDoctor: React.FC<RatedDoctor> = ({
+  name,
+  category,
+  picture,
+  onPress,
+}) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <Image source={picture} style={styles.avatar} />
       <View style={styles.profile}>
         <Text style={styles.name}>{name}</Text>
@@ -24,7 +38,7 @@ const RatedDoctor: React.FC<ListDoctorProps> = ({name, category, picture}) => {
         <IconStar width={12} height={12} />
         <IconStar width={12} height={12} />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

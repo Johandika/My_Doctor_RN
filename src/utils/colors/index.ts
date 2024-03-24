@@ -3,8 +3,10 @@ interface MainColors {
   blue2: string;
   dark1: string;
   dark2: string;
+  dark3: string;
   grey1: string;
   grey2: string;
+  grey3: string;
 }
 
 interface Colors {
@@ -13,11 +15,13 @@ interface Colors {
   white: string;
   black: string;
   cardLight: string;
+  disable: string;
   text: {
     primary: string;
     secondary: string;
     menuInactive: string;
     menuActive: string;
+    subTitle: string;
   };
   button: {
     primary: {
@@ -38,8 +42,10 @@ const mainColors: MainColors = {
   blue2: '#EAF4FB',
   dark1: '#112340',
   dark2: '#D0CEDC',
+  dark3: '#8092AF',
   grey1: '#7D8797',
   grey2: '#E9E9E9',
+  grey3: '#EDEFE0',
 };
 
 export const colors: Colors = {
@@ -48,11 +54,13 @@ export const colors: Colors = {
   white: 'white',
   black: 'black',
   cardLight: mainColors.blue2,
+  disable: mainColors.grey3,
   text: {
     primary: mainColors.dark1,
     secondary: mainColors.grey1,
     menuInactive: mainColors.dark2,
     menuActive: mainColors.blue1,
+    subTitle: mainColors.dark3,
   },
   button: {
     primary: {
