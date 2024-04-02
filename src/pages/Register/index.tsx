@@ -1,29 +1,91 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
-import {Input, Button} from '../../components/atoms';
-import {Header} from '../../components/molecules';
-import {colors} from '../../utils';
-import {Gap} from '../../components/atoms';
+import React, {useState} from 'react';
+import {ScrollView, StyleSheet, View} from 'react-native';
+import {Input, Button, Header, Gap, Loading} from '../../components';
+import {colors, useForm} from '../../utils';
+import {FirebaseAuth} from '../../config';
+import {createUserWithEmailAndPassword} from 'firebase/auth';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 const Register = ({navigation}: any) => {
+  const [form, setForm] = useForm({
+    fullName: '',
+    profession: '',
+    email: '',
+    password: '',
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  const onContinue = () => {
+    setLoading(true);
+
+    createUserWithEmailAndPassword(FirebaseAuth, form.email, form.password)
+      .then(success => {
+        console.log('Success Register :', success);
+
+        setLoading(false);
+        showMessage({
+          message: 'Register Success',
+          type: 'success',
+          backgroundColor: 'green',
+          color: colors.white,
+        });
+
+        setForm('reset');
+      })
+      .catch(error => {
+        const errorMessage = error.message.replace('Firebase: ', '');
+        console.log('Error Register :', error);
+
+        setLoading(false);
+        // setForm('reset');
+        showMessage({
+          message: errorMessage,
+          type: 'default',
+          backgroundColor: colors.error,
+          color: colors.white,
+        });
+      });
+    // navigation.navigate('UploadPhoto');
+  };
+
   return (
-    <View style={styles.page}>
-      <Header title="Daftar" onPress={() => navigation.goBack()} />
-      <View style={styles.content}>
-        <Input label="Full Name" />
-        <Gap size={24} />
-        <Input label="Job" />
-        <Gap size={24} />
-        <Input label="Email Address" />
-        <Gap size={24} />
-        <Input label="Password" />
-        <Gap size={40} />
-        <Button
-          title="Continue"
-          onPress={() => navigation.navigate('UploadPhoto')}
-        />
+    <>
+      <View style={styles.page}>
+        <Header title="Daftar" onPress={() => navigation.goBack()} />
+        <View style={styles.content}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Input
+              label="Full Name"
+              value={form.fullName}
+              onChangeText={value => setForm('fullName', value)}
+            />
+            <Gap size={24} />
+            <Input
+              label="Job"
+              value={form.profession}
+              onChangeText={value => setForm('profession', value)}
+            />
+            <Gap size={24} />
+            <Input
+              label="Email Address"
+              value={form.email}
+              onChangeText={value => setForm('email', value)}
+            />
+            <Gap size={24} />
+            <Input
+              label="Password"
+              value={form.password}
+              onChangeText={value => setForm('password', value)}
+              secureTextEntry
+            />
+            <Gap size={40} />
+            <Button title="Continue" onPress={onContinue} />
+          </ScrollView>
+        </View>
       </View>
-    </View>
+      {loading && <Loading />}
+    </>
   );
 };
 
