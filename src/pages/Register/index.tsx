@@ -2,9 +2,11 @@ import React, {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Input, Button, Header, Gap, Loading} from '../../components';
 import {colors, useForm} from '../../utils';
-import {FirebaseAuth} from '../../config';
+import {auth, database} from '../../config';
 import {createUserWithEmailAndPassword} from 'firebase/auth';
-import {showMessage, hideMessage} from 'react-native-flash-message';
+import {showMessage} from 'react-native-flash-message';
+import 'firebase/database';
+import {ref, set} from 'firebase/database';
 
 const Register = ({navigation}: any) => {
   const [form, setForm] = useForm({
@@ -19,11 +21,15 @@ const Register = ({navigation}: any) => {
   const onContinue = () => {
     setLoading(true);
 
-    createUserWithEmailAndPassword(FirebaseAuth, form.email, form.password)
+    createUserWithEmailAndPassword(auth, form.email, form.password)
       .then(success => {
-        console.log('Success Register :', success);
+        //https://firebase.com/users/i3wc9Kw/
+        set(ref(database, 'users/' + success.user.uid + '/'), {
+          fullName: form.fullName,
+          profession: form.profession,
+          email: form.email,
+        });
 
-        setLoading(false);
         showMessage({
           message: 'Register Success',
           type: 'success',
@@ -31,20 +37,23 @@ const Register = ({navigation}: any) => {
           color: colors.white,
         });
 
+        setLoading(false);
         setForm('reset');
       })
+
       .catch(error => {
         const errorMessage = error.message.replace('Firebase: ', '');
         console.log('Error Register :', error);
 
-        setLoading(false);
-        // setForm('reset');
         showMessage({
           message: errorMessage,
           type: 'default',
           backgroundColor: colors.error,
           color: colors.white,
         });
+
+        setLoading(false);
+        setForm('reset');
       });
     // navigation.navigate('UploadPhoto');
   };
