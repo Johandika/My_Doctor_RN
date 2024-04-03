@@ -1,27 +1,46 @@
-import {StyleSheet, Image, View, Text} from 'react-native';
-import React from 'react';
+import {StyleSheet, Image, View, Text, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
 import {Button, Gap, Header, Link} from '../../components';
-import {ILemptyprofileImage, IconAddPhoto} from '../../assets';
+import {ILemptyprofile, ILemptyprofileImage, IconAddPhoto} from '../../assets';
 import {colors, fonts} from '../../utils';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 const UploadPhoto = ({navigation}) => {
+  const [hasPhoto, setHasPhoto] = useState(false);
+  const [photo, setPhoto] = useState(ILemptyprofileImage);
+
+  const getImageFromGallery = () => {
+    launchImageLibrary({}, response => {
+      console.log('response :', response);
+      const source = {uri: response.assets[0].uri};
+      setPhoto(source);
+    });
+  };
+
   return (
     <View style={styles.page}>
       <Header title="Upload Photo" onPress={() => navigation.goBack()} />
       <View style={styles.content}>
         <View style={styles.profileContent}>
-          <View style={styles.avatarWrapper}>
-            <Image source={ILemptyprofileImage} style={styles.avatar} />
+          <TouchableOpacity
+            style={styles.avatarWrapper}
+            onPress={getImageFromGallery}>
+            <Image source={photo} style={styles.avatar} />
 
             <View style={styles.iconContainer}>
-              <IconAddPhoto width={30} height={30} />
+              {hasPhoto && <ILemptyprofile width={30} height={30} />}
+              {!hasPhoto && <IconAddPhoto width={30} height={30} />}
             </View>
-          </View>
+          </TouchableOpacity>
           <Text style={styles.name}>Shayna Melinda</Text>
           <Text style={styles.profession}>Product Designer</Text>
         </View>
         <View>
-          <Button title="Upload and Continue" />
+          <Button
+            disable
+            title="Upload and Continue"
+            onPress={() => navigation.replace('MainApp')}
+          />
           <Gap size={20} />
           <Link
             title="Skip for this"

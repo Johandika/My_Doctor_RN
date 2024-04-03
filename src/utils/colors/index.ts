@@ -39,6 +39,10 @@ export const colors: ColorsSet = {
       background: 'white',
       text: mainColors.dark1,
     },
+    disable: {
+      background: mainColors.dark2,
+      text: mainColors.grey1,
+    },
     border: mainColors.grey2,
   },
   border: mainColors.grey2,

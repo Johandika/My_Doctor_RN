@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  View,
   ViewStyle,
 } from 'react-native';
 import {colors} from '../../../utils';
@@ -39,6 +40,14 @@ const Button: React.FC<ButtonProps> = ({
     return <IconOnly icon={icon} onPress={onPress} />;
   }
 
+  if (disable) {
+    return (
+      <View style={styles.disableBg}>
+        <Text style={styles.disableText}>{title}</Text>
+      </View>
+    );
+  }
+
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <Text style={styles.text}>{title}</Text>
@@ -64,6 +73,16 @@ const getStyles = <T extends ButtonProps>(
           : colors.button.primary.background,
       ...style,
     },
+    disableBg: {
+      paddingVertical: 12,
+      paddingHorizontal: 20,
+      borderRadius: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderColor: colors.button.primary.background,
+      backgroundColor: colors.button.disable.background,
+      ...style,
+    },
     text: {
       fontSize: 18,
       fontFamily: 'Nunito-SemiBold',
@@ -73,6 +92,12 @@ const getStyles = <T extends ButtonProps>(
           ? colors.button.secondary.text
           : colors.button.primary.text,
       ...style,
+    },
+    disableText: {
+      fontSize: 18,
+      fontFamily: 'Nunito-SemiBold',
+      textAlign: 'center',
+      color: colors.button.disable.text,
     },
   });
 };
