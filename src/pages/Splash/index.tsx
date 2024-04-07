@@ -2,12 +2,18 @@ import {StyleSheet, Text, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {ILmydoctorlogo} from '../../assets';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {NavigationProps, NavigationPropsStack} from '../../../declarations';
 
-interface SplashProps {
-  navigation: StackNavigationProp<any, 'Splash'>; // Sesuaikan dengan jenis navigasi Anda
-}
+// export type RootStackParamList = {
+//   Splash: undefined;
+//   GetStarted: undefined;
+//   // Tambahkan parameter lain yang Anda gunakan
+// };
+// interface SplashProps {
+//   navigation: StackNavigationProp<any, 'Splash'>; // Sesuaikan dengan jenis navigasi Anda
+// }
 
-const Splash: React.FC<SplashProps> = ({navigation}) => {
+const Splash = ({navigation}: NavigationPropsStack) => {
   useEffect(() => {
     setTimeout(() => {
       navigation.replace('GetStarted'); // replace tidak akan bisa back , beda dgn navigate

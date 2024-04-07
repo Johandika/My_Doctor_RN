@@ -3,19 +3,9 @@ import React from 'react';
 import {Button} from '../../components';
 import {ILdoctorsplash, ILmydoctorlogo} from '../../assets';
 import Gap from '../../components/atoms/Gap';
-import {StackNavigationProp} from '@react-navigation/stack';
+import {NavigationPropsStack} from '../../../declarations';
 
-type RootStackParamList = {
-  Register: undefined;
-  Login: undefined;
-  // ... (Tambahkan rute lain jika diperlukan)
-};
-
-interface GetStartedProps {
-  navigation: StackNavigationProp<RootStackParamList>;
-}
-
-const GetStarted: React.FC<GetStartedProps> = ({navigation}) => {
+const GetStarted = ({navigation}: NavigationPropsStack) => {
   return (
     <ImageBackground source={ILdoctorsplash} style={styles.page}>
       <View>

@@ -1,5 +1,5 @@
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   DoctorCategory,
   Gap,
@@ -7,10 +7,11 @@ import {
   NewsItem,
   RatedDoctor,
 } from '../../components';
-import {colors, fonts} from '../../utils';
+import {colors, fonts, getData} from '../../utils';
 import {dataDoctor, dataDoctorCategory} from '../../assets';
+import {NavigationProps} from '../../../declarations';
 
-const Doctor = ({navigation}: any) => {
+const Doctor = ({navigation}: NavigationProps) => {
   return (
     <View style={styles.page}>
       <View style={styles.content}>

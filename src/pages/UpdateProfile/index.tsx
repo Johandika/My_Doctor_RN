@@ -1,8 +1,9 @@
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {Button, Gap, Header, Input, Profile} from '../../components';
+import {NavigationProps} from '.../../../declarations';
 
-const UpdateProfile = ({navigation}) => {
+const UpdateProfile = ({navigation}: NavigationProps) => {
   return (
     <View style={styles.page}>
       <Header

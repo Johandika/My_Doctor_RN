@@ -1,8 +1,9 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {Button, Gap, Header, Profile, ProfileItem} from '../../components';
+import {NavigationProps} from '../../../declarations';
 
-const DoctorProfile = ({navigation}) => {
+const DoctorProfile = ({navigation}: NavigationProps) => {
   return (
     <View style={styles.page}>
       <Header title="Doctor Profile" onPress={() => navigation.goBack()} />

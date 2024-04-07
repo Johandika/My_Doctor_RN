@@ -3,8 +3,9 @@ import React from 'react';
 import {List} from '../../components';
 import {colors, fonts} from '../../utils';
 import {doctor1, doctor2, doctor3} from '../../assets';
+import {NavigationProps} from '../../../declarations';
 
-const Messages = ({navigation}) => {
+const Messages = ({navigation}: NavigationProps) => {
   return (
     <View style={styles.page}>
       <View style={styles.content}>

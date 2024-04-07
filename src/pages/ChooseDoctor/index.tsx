@@ -3,8 +3,9 @@ import React from 'react';
 import {Header, List} from '../../components';
 import {doctor1, doctor2, doctor3} from '../../assets';
 import {colors} from '../../utils';
+import {NavigationProps} from '../../../declarations';
 
-const ChooseDoctor = ({navigation}: any) => {
+const ChooseDoctor = ({navigation}: NavigationProps) => {
   return (
     <View style={styles.page}>
       <Header

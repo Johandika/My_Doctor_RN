@@ -1,35 +1,102 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import React, {useState} from 'react';
 import {ILmydoctorlogo} from '../../assets';
 import {Button, Gap, Input, Link} from '../../components/atoms';
+import {NavigationPropsStack} from '../../../declarations';
+import {colors, getData, storeData, useForm} from '../../utils';
+import {signInWithEmailAndPassword} from 'firebase/auth';
+import {auth, dbRef} from '../../config';
+import {showMessage} from 'react-native-flash-message';
+import {Loading} from '../../components';
+import {child, get} from 'firebase/database';
 
-const Login = ({navigation}: any) => {
+const Login = ({navigation}: NavigationPropsStack) => {
+  const [form, setForm] = useForm({
+    email: '',
+    password: '',
+  });
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = () => {
+    setLoading(true);
+
+    signInWithEmailAndPassword(auth, form.email, form.password)
+      .then(result => {
+        // Get data dari firebase sekali
+        get(child(dbRef, `users/${result.user.uid}/`)).then(snapshot => {
+          if (snapshot.val()) {
+            // simpan data di localstorage, tapi password jangan ikut di simpan
+            storeData('user', snapshot.val());
+            navigation.replace('MainApp');
+          }
+        });
+
+        showMessage({
+          message: 'Login Success',
+          type: 'success',
+          backgroundColor: 'green',
+          color: colors.white,
+        });
+
+        setLoading(false);
+        setForm('reset');
+      })
+      .catch(error => {
+        const errorMessage = error.message.replace('Firebase: ', '');
+        console.log(error);
+        showMessage({
+          message: errorMessage,
+          type: 'default',
+          backgroundColor: colors.error,
+          color: colors.white,
+        });
+
+        setLoading(false);
+        // setForm('reset');
+      });
+  };
+
   return (
-    <View style={styles.page}>
-      <ILmydoctorlogo width={90} height={90} fill="#0078FF" />
-      <Text style={styles.title}>Masuk dan mulai berkonsultasi</Text>
-      <Input label="Email Address" />
-      <Gap size={24} />
-      <Input label="Password" />
-      <Gap size={10} />
-      <Link title={'Forgot My Password?'} size={12} />
-      <Gap size={40} />
-      <Button title="Sign In" onPress={() => navigation.replace('MainApp')} />
-      <Gap size={30} />
-      <Link
-        title={'Create New Account'}
-        size={16}
-        align="center"
-        onPress={() => navigation.navigate('Register')}
-      />
-    </View>
+    <>
+      <View style={styles.page}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Gap size={25} />
+          <ILmydoctorlogo width={90} height={90} fill="#0078FF" />
+          <Text style={styles.title}>Masuk dan mulai berkonsultasi</Text>
+          <Input
+            label="Email Address"
+            value={form.email}
+            onChangeText={value => setForm('email', value)}
+          />
+          <Gap size={24} />
+          <Input
+            label="Password"
+            value={form.password}
+            onChangeText={value => setForm('password', value)}
+            secureTextEntry
+          />
+          <Gap size={10} />
+          <Link title={'Forgot My Password?'} size={12} />
+          <Gap size={40} />
+          <Button title="Sign In" onPress={handleLogin} />
+          <Gap size={30} />
+          <Link
+            title={'Create New Account'}
+            size={16}
+            align="center"
+            onPress={() => navigation.navigate('Register')}
+          />
+        </ScrollView>
+      </View>
+      {loading && <Loading />}
+    </>
   );
 };
 
 export default Login;
 
 const styles = StyleSheet.create({
-  page: {padding: 25},
+  page: {paddingHorizontal: 25},
   title: {
     fontSize: 20,
     fontFamily: 'Nunito-SemiBold',
