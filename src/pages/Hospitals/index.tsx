@@ -1,10 +1,34 @@
 import {StyleSheet, Text, View, ImageBackground} from 'react-native';
-import React from 'react';
-import {ILhospitalbg, dataHospital} from '../../assets';
-import {colors, fonts} from '../../utils';
+import React, {useEffect, useState} from 'react';
+import {ILhospitalbg} from '../../assets';
+import {colors, fonts, showError} from '../../utils';
 import {ListHospital} from '../../components';
+import {child, get} from 'firebase/database';
+import {dbRef} from '../../config';
+
+interface HospitalsItem {
+  id: number;
+  type: string;
+  image: string;
+  name: string;
+  address: string;
+}
 
 const Hospitals = () => {
+  const [dataHospital, setDataHospital] = useState<HospitalsItem[]>([]);
+
+  useEffect(() => {
+    get(child(dbRef, `hospitals/`))
+      .then(snapshot => {
+        if (snapshot.exists()) {
+          setDataHospital(snapshot.val());
+        }
+      })
+      .catch(err => {
+        showError(err.message);
+      });
+  }, []);
+
   return (
     <View style={styles.page}>
       <ImageBackground source={ILhospitalbg} style={styles.background}>
@@ -16,7 +40,7 @@ const Hospitals = () => {
           <ListHospital
             key={hospital.id}
             type={hospital.type}
-            picture={hospital.picture}
+            picture={hospital.image}
             name={hospital.name}
             address={hospital.address}
           />

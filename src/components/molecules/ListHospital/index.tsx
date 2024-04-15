@@ -1,13 +1,12 @@
 import {StyleSheet, Text, View, Image} from 'react-native';
 import React from 'react';
 import {colors, fonts} from '../../../utils';
-import {ImageSourcePropType} from 'react-native';
 
 interface ListHospitalProps {
   type: string;
   name: string;
   address: string;
-  picture: ImageSourcePropType;
+  picture: string;
 }
 
 const ListHospital: React.FC<ListHospitalProps> = ({
@@ -18,7 +17,7 @@ const ListHospital: React.FC<ListHospitalProps> = ({
 }) => {
   return (
     <View style={styles.container}>
-      <Image source={picture} style={styles.picture} />
+      <Image source={{uri: picture}} style={styles.picture} />
       <View>
         <Text style={styles.title}>{type}</Text>
         <Text style={styles.title}>{name}</Text>

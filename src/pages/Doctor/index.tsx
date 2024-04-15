@@ -1,18 +1,40 @@
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-  Button,
   DoctorCategory,
   Gap,
   HomeProfile,
   NewsItem,
   RatedDoctor,
 } from '../../components';
-import {colors, fonts} from '../../utils';
+import {colors, fonts, showError} from '../../utils';
 import {dataDoctor, dataDoctorCategory} from '../../assets';
 import {NavigationPropsStack} from '../../../declarations';
+import {child, get} from 'firebase/database';
+import {dbRef} from '../../config';
+
+interface NewsItem {
+  title: string;
+  date: string;
+  image: string;
+  id: number;
+}
 
 const Doctor = ({navigation}: NavigationPropsStack) => {
+  const [news, setNews] = useState<NewsItem[]>([]);
+
+  useEffect(() => {
+    get(child(dbRef, `news/`))
+      .then(snapshot => {
+        if (snapshot.exists()) {
+          setNews(snapshot.val());
+        }
+      })
+      .catch(err => {
+        showError(err.message);
+      });
+  }, []);
+
   return (
     <View style={styles.page}>
       <View style={styles.content}>
@@ -55,14 +77,15 @@ const Doctor = ({navigation}: NavigationPropsStack) => {
 
             <Text style={styles.sectionLabel}>Good News</Text>
           </View>
-          <NewsItem />
-          <NewsItem />
-          <NewsItem />
+          {news.map(item => (
+            <NewsItem
+              key={item.id}
+              title={item.title}
+              date={item.date}
+              image={item.image}
+            />
+          ))}
           <Gap size={30} />
-          <Button
-            onPress={() => navigation.navigate('Login')}
-            title={'logout'}
-          />
         </ScrollView>
       </View>
     </View>

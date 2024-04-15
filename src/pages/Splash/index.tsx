@@ -8,15 +8,18 @@ import 'firebase/auth';
 
 const Splash = ({navigation}: NavigationPropsStack) => {
   useEffect(() => {
-    setTimeout(() => {
-      onAuthStateChanged(auth, user => {
+    // Sebenarnya di onAuth baru , gaperlu unsubscribe sepertinya, tapi tetap ngikut tutor jadi tetap di buat untuk unmount useEffectnya
+    const unsubscribe = onAuthStateChanged(auth, user => {
+      setTimeout(() => {
         if (user) {
           navigation.replace('MainApp');
         } else {
           navigation.replace('GetStarted');
         }
-      });
-    }, 3000);
+      }, 3000);
+    });
+
+    return () => unsubscribe();
   }, [navigation]);
 
   return (
