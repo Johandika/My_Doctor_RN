@@ -7,6 +7,7 @@ interface InputProps {
   value: string;
   onChangeText: (text: string) => void;
   secureTextEntry?: boolean;
+  disable?: boolean;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -14,6 +15,7 @@ const Input: React.FC<InputProps> = ({
   value,
   onChangeText,
   secureTextEntry,
+  disable,
 }) => {
   const [border, setBorder] = useState(colors.border);
   const styles = getStyles(border);
@@ -36,6 +38,8 @@ const Input: React.FC<InputProps> = ({
         value={value}
         onChangeText={onChangeText}
         secureTextEntry={secureTextEntry}
+        editable={!disable}
+        selectTextOnFocus={!disable}
       />
     </View>
   );

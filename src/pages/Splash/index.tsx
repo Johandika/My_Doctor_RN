@@ -1,22 +1,29 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {ILmydoctorlogo} from '../../assets';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {NavigationProps, NavigationPropsStack} from '../../../declarations';
-
-// export type RootStackParamList = {
-//   Splash: undefined;
-//   GetStarted: undefined;
-//   // Tambahkan parameter lain yang Anda gunakan
-// };
-// interface SplashProps {
-//   navigation: StackNavigationProp<any, 'Splash'>; // Sesuaikan dengan jenis navigasi Anda
-// }
+import {NavigationPropsStack} from '../../../declarations';
+import {getIdToken, onAuthStateChanged} from 'firebase/auth';
+import {auth} from '../../config';
+import 'firebase/auth';
+import {getData, storeData} from '../../utils';
 
 const Splash = ({navigation}: NavigationPropsStack) => {
   useEffect(() => {
     setTimeout(() => {
-      navigation.replace('GetStarted'); // replace tidak akan bisa back , beda dgn navigate
+      onAuthStateChanged(auth, async user => {
+        if (user) {
+          navigation.replace('MainApp');
+
+          // getData('user').then(result =>
+          //   console.log('data user splash :', result),
+          // );
+        } else {
+          // console.log('sudah logout');
+          navigation.replace('GetStarted');
+          // console.log('user login :', user);
+          // getData('user').then(result => console.log('dataLocal :', result));
+        }
+      });
     }, 3000);
   }, [navigation]);
 

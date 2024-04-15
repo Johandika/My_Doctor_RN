@@ -1,23 +1,52 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {
+  GestureResponderEvent,
+  Image,
+  ImageSourcePropType,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
-import {ILemptyprofile, dummyUser} from '../../../assets';
+import {ILemptyprofile, ILemptyprofileImage} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
 interface ProfileProps {
   name?: string;
   description?: string;
   iconRemove?: boolean;
+  photo?: ImageSourcePropType | string;
+  onPress?: (event: GestureResponderEvent) => void;
+  isRemove?: boolean;
 }
 
-const Profile: React.FC<ProfileProps> = ({name, description, iconRemove}) => {
+const Profile: React.FC<ProfileProps> = ({
+  name,
+  description,
+  iconRemove,
+  photo = ILemptyprofileImage,
+  onPress,
+  isRemove,
+}) => {
   return (
     <View style={styles.container}>
-      <View style={styles.borderProfile}>
-        <Image source={dummyUser} style={styles.avatar} />
-        {iconRemove && (
-          <ILemptyprofile style={styles.removePhoto} width={30} height={30} />
-        )}
-      </View>
+      {!isRemove && (
+        <View style={styles.borderProfile}>
+          <Image source={photo} style={styles.avatar} />
+          {iconRemove && (
+            <ILemptyprofile style={styles.removePhoto} width={30} height={30} />
+          )}
+        </View>
+      )}
+      {isRemove && (
+        <TouchableOpacity style={styles.borderProfile} onPress={onPress}>
+          <Image source={photo} style={styles.avatar} />
+          {iconRemove && (
+            <ILemptyprofile style={styles.removePhoto} width={30} height={30} />
+          )}
+        </TouchableOpacity>
+      )}
+
       {name && <Text style={styles.name}>{name}</Text>}
       {description && <Text style={styles.proffesion}>{description}</Text>}
     </View>

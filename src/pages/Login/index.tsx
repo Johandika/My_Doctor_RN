@@ -1,11 +1,11 @@
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ILmydoctorlogo} from '../../assets';
 import {Button, Gap, Input, Link} from '../../components/atoms';
 import {NavigationPropsStack} from '../../../declarations';
 import {colors, getData, storeData, useForm} from '../../utils';
-import {signInWithEmailAndPassword} from 'firebase/auth';
-import {auth, dbRef} from '../../config';
+import {onAuthStateChanged, signInWithEmailAndPassword} from 'firebase/auth';
+import {auth, database, dbRef} from '../../config';
 import {showMessage} from 'react-native-flash-message';
 import {Loading} from '../../components';
 import {child, get} from 'firebase/database';
@@ -24,22 +24,24 @@ const Login = ({navigation}: NavigationPropsStack) => {
       .then(result => {
         // Get data dari firebase sekali
         get(child(dbRef, `users/${result.user.uid}/`)).then(snapshot => {
-          if (snapshot.val()) {
+          if (snapshot.exists()) {
             // simpan data di localstorage, tapi password jangan ikut di simpan
-            storeData('user', snapshot.val());
-            navigation.replace('MainApp');
+            // storeData('user', snapshot.val());
+            console.log('snapshot1');
+            showMessage({
+              message: 'Login Success',
+              type: 'success',
+              backgroundColor: 'green',
+              color: colors.white,
+            });
+            console.log('snapshot2');
+
+            // Disini tidak ada menavigasi karena ketika sudah sign in , onAuthStateChanged akan otomatis di jalankan
           }
         });
 
-        showMessage({
-          message: 'Login Success',
-          type: 'success',
-          backgroundColor: 'green',
-          color: colors.white,
-        });
-
         setLoading(false);
-        setForm('reset');
+        // setForm('reset');
       })
       .catch(error => {
         const errorMessage = error.message.replace('Firebase: ', '');

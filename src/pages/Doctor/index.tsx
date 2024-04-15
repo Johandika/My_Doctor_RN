@@ -1,24 +1,25 @@
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
+  Button,
   DoctorCategory,
   Gap,
   HomeProfile,
   NewsItem,
   RatedDoctor,
 } from '../../components';
-import {colors, fonts, getData} from '../../utils';
+import {colors, fonts} from '../../utils';
 import {dataDoctor, dataDoctorCategory} from '../../assets';
-import {NavigationProps} from '../../../declarations';
+import {NavigationPropsStack} from '../../../declarations';
 
-const Doctor = ({navigation}: NavigationProps) => {
+const Doctor = ({navigation}: NavigationPropsStack) => {
   return (
     <View style={styles.page}>
       <View style={styles.content}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.wrapperSection}>
             <Gap size={30} />
-            <HomeProfile onPress={() => navigation.navigate('UserProfile')} />
+            <HomeProfile onPress={() => navigation.replace('UserProfile')} />
             <Text style={styles.welcome}>
               Mau konsultasi dengan siapa hari ini?
             </Text>
@@ -58,6 +59,10 @@ const Doctor = ({navigation}: NavigationProps) => {
           <NewsItem />
           <NewsItem />
           <Gap size={30} />
+          <Button
+            onPress={() => navigation.navigate('Login')}
+            title={'logout'}
+          />
         </ScrollView>
       </View>
     </View>

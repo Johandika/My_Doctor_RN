@@ -14,7 +14,7 @@ interface HomeProfileProps {
   onPress: (event: GestureResponderEvent) => void;
 }
 
-const HomeProfile: React.FC<HomeProfileProps> = ({onPress}) => {
+const HomeProfile: React.FC<HomeProfileProps> = ({navigation, onPress}) => {
   const [profile, setProfile] = useState({
     photo: ILemptyprofileImage,
     fullName: '',
@@ -23,10 +23,12 @@ const HomeProfile: React.FC<HomeProfileProps> = ({onPress}) => {
 
   useEffect(() => {
     getData('user').then(res => {
-      // base64 photo dari firebase harus di ubah lagi ketika ingin di gunakan di local dengan uri:res.photo
       const data = res;
       data.photo = {uri: res.photo};
-      setProfile(res);
+      setProfile(data);
+      console.log('Laman Home Profile dirender');
+      console.log('data laman utama :', data);
+      // console.log('foto laman utamaa :', data.photo.uri);
     });
   }, []);
 
