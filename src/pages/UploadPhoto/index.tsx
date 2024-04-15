@@ -2,11 +2,10 @@ import {StyleSheet, Image, View, Text, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {Button, Gap, Header, Link} from '../../components';
 import {ILemptyprofile, ILemptyprofileImage, IconAddPhoto} from '../../assets';
-import {colors, fonts, storeData} from '../../utils';
+import {colors, fonts, showError, storeData} from '../../utils';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {showMessage} from 'react-native-flash-message';
 import {database} from '../../config';
-import {ref, set, update} from 'firebase/database';
+import {ref, update} from 'firebase/database';
 
 const UploadPhoto = ({navigation, route}) => {
   const {fullName, profession, uid} = route.params;
@@ -22,12 +21,7 @@ const UploadPhoto = ({navigation, route}) => {
         console.log('response :', response);
 
         if (response.didCancel || response.errorCode) {
-          showMessage({
-            message: 'Anda masih belum mengupload foto',
-            type: 'default',
-            backgroundColor: colors.error,
-            color: colors.white,
-          });
+          showError('Anda masih belum mengupload foto');
         } else {
           setPhotoForDB(
             `data:${response.assets[0].type};base64, ${response.assets[0].base64}`,

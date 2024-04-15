@@ -1,10 +1,16 @@
 import React, {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Input, Button, Header, Gap, Loading} from '../../components';
-import {colors, getData, storeData, useForm} from '../../utils';
+import {
+  colors,
+  getData,
+  showError,
+  showSuccess,
+  storeData,
+  useForm,
+} from '../../utils';
 import {auth, database} from '../../config';
 import {createUserWithEmailAndPassword} from 'firebase/auth';
-import {showMessage} from 'react-native-flash-message';
 import 'firebase/database';
 import {ref, set} from 'firebase/database';
 import {NavigationProps} from '../../../declarations';
@@ -35,12 +41,7 @@ const Register = ({navigation}: NavigationProps) => {
         //https://firebase.com/users/i3wc9Kw/
         set(ref(database, 'users/' + success.user.uid + '/'), data);
 
-        showMessage({
-          message: 'Register Success',
-          type: 'success',
-          backgroundColor: 'green',
-          color: colors.white,
-        });
+        showSuccess('Register Success');
 
         // simpan data di localstorage, tapi password jangan ikut di simpan
         storeData('user', data);
@@ -56,12 +57,7 @@ const Register = ({navigation}: NavigationProps) => {
         const errorMessage = error.message.replace('Firebase: ', '');
         console.log('Error Register :', error);
 
-        showMessage({
-          message: errorMessage,
-          type: 'default',
-          backgroundColor: colors.error,
-          color: colors.white,
-        });
+        showError(errorMessage);
 
         setLoading(false);
         setForm('reset');

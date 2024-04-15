@@ -1,24 +1,24 @@
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {ILmydoctorlogo} from '../../assets';
 import {Button, Gap, Input, Link} from '../../components/atoms';
 import {NavigationPropsStack} from '../../../declarations';
-import {colors, getData, storeData, useForm} from '../../utils';
-import {onAuthStateChanged, signInWithEmailAndPassword} from 'firebase/auth';
-import {auth, database, dbRef} from '../../config';
-import {showMessage} from 'react-native-flash-message';
-import {Loading} from '../../components';
+import {showError, showSuccess, storeData, useForm} from '../../utils';
+import {signInWithEmailAndPassword} from 'firebase/auth';
+import {auth, dbRef} from '../../config';
 import {child, get} from 'firebase/database';
+import {useDispatch} from 'react-redux';
+import {setLoading} from '../../redux/slices';
 
 const Login = ({navigation}: NavigationPropsStack) => {
   const [form, setForm] = useForm({
     email: '',
     password: '',
   });
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const handleLogin = () => {
-    setLoading(true);
+    dispatch(setLoading(true));
 
     signInWithEmailAndPassword(auth, form.email, form.password)
       .then(result => {
@@ -26,35 +26,20 @@ const Login = ({navigation}: NavigationPropsStack) => {
         get(child(dbRef, `users/${result.user.uid}/`)).then(snapshot => {
           if (snapshot.exists()) {
             // simpan data di localstorage, tapi password jangan ikut di simpan
-            // storeData('user', snapshot.val());
-            console.log('snapshot1');
-            showMessage({
-              message: 'Login Success',
-              type: 'success',
-              backgroundColor: 'green',
-              color: colors.white,
-            });
-            console.log('snapshot2');
-
-            // Disini tidak ada menavigasi karena ketika sudah sign in , onAuthStateChanged akan otomatis di jalankan
+            storeData('user', snapshot.val());
           }
         });
 
-        setLoading(false);
-        // setForm('reset');
+        dispatch(setLoading(false));
+        setForm('reset');
       })
       .catch(error => {
         const errorMessage = error.message.replace('Firebase: ', '');
         console.log(error);
-        showMessage({
-          message: errorMessage,
-          type: 'default',
-          backgroundColor: colors.error,
-          color: colors.white,
-        });
+        showError(errorMessage);
 
-        setLoading(false);
-        // setForm('reset');
+        dispatch(setLoading(false));
+        setForm('reset');
       });
   };
 
@@ -90,7 +75,6 @@ const Login = ({navigation}: NavigationPropsStack) => {
           />
         </ScrollView>
       </View>
-      {loading && <Loading />}
     </>
   );
 };

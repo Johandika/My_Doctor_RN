@@ -1,12 +1,11 @@
 import {ScrollView, StyleSheet, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Button, Gap, Header, Input, Profile} from '../../components';
-import {NavigationProps, NavigationPropsStack} from '.../../../declarations';
-import {colors, getData, storeData} from '../../utils';
+import {NavigationPropsStack} from '.../../../declarations';
+import {getData, showError, storeData} from '../../utils';
 import {auth, database} from '../../config';
 import {ref, update} from 'firebase/database';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {showMessage} from 'react-native-flash-message';
 import {onAuthStateChanged, updatePassword} from 'firebase/auth';
 import {ILemptyprofileImage} from '../../assets';
 
@@ -33,21 +32,14 @@ const UpdateProfile = ({navigation}: NavigationPropsStack) => {
   const handleUpdate = () => {
     if (password.length > 0) {
       if (password.length < 6) {
-        showMessage({
-          message: 'Password minimal harus 6 karakter',
-          type: 'default',
-          backgroundColor: colors.error,
-          color: colors.white,
-        });
+        showError('Password minimal harus 6 karakter');
       } else {
         handleUpdatePassword();
         updateProfileData();
         navigation.replace('MainApp');
-        console.log('Success update profile dan password');
       }
     } else {
       updateProfileData();
-      // console.log('Success update profile saja');
     }
   };
 
@@ -61,12 +53,7 @@ const UpdateProfile = ({navigation}: NavigationPropsStack) => {
             console.log('Update password berhasil');
           })
           .catch(error => {
-            showMessage({
-              message: error.message,
-              type: 'default',
-              backgroundColor: colors.error,
-              color: colors.white,
-            });
+            showError(error.message);
           });
       }
     });
@@ -84,12 +71,7 @@ const UpdateProfile = ({navigation}: NavigationPropsStack) => {
         navigation.replace('MainApp');
       })
       .catch(error => {
-        showMessage({
-          message: error.message,
-          type: 'default',
-          backgroundColor: colors.error,
-          color: colors.white,
-        });
+        showError(error.message);
       });
   };
 
@@ -103,12 +85,7 @@ const UpdateProfile = ({navigation}: NavigationPropsStack) => {
       {quality: 0.5, maxWidth: 200, maxHeight: 200, includeBase64: true},
       response => {
         if (response.didCancel || response.errorCode) {
-          showMessage({
-            message: 'Anda masih belum mengupload foto',
-            type: 'default',
-            backgroundColor: colors.error,
-            color: colors.white,
-          });
+          showError('Anda masih belum mengupload foto');
         } else {
           const source = {uri: response.assets[0].uri};
 

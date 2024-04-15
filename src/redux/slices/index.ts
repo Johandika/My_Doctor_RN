@@ -1,3 +1,3 @@
-import loadingSlice from './loadingSlice';
+import {setLoading} from './loadingSlice';
 
-export {loadingSlice};
+export {setLoading};

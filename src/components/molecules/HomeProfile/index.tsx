@@ -26,9 +26,6 @@ const HomeProfile: React.FC<HomeProfileProps> = ({navigation, onPress}) => {
       const data = res;
       data.photo = {uri: res.photo};
       setProfile(data);
-      console.log('Laman Home Profile dirender');
-      console.log('data laman utama :', data);
-      // console.log('foto laman utamaa :', data.photo.uri);
     });
   }, []);
 

@@ -2,26 +2,18 @@ import {StyleSheet, Text, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {ILmydoctorlogo} from '../../assets';
 import {NavigationPropsStack} from '../../../declarations';
-import {getIdToken, onAuthStateChanged} from 'firebase/auth';
+import {onAuthStateChanged} from 'firebase/auth';
 import {auth} from '../../config';
 import 'firebase/auth';
-import {getData, storeData} from '../../utils';
 
 const Splash = ({navigation}: NavigationPropsStack) => {
   useEffect(() => {
     setTimeout(() => {
-      onAuthStateChanged(auth, async user => {
+      onAuthStateChanged(auth, user => {
         if (user) {
           navigation.replace('MainApp');
-
-          // getData('user').then(result =>
-          //   console.log('data user splash :', result),
-          // );
         } else {
-          // console.log('sudah logout');
           navigation.replace('GetStarted');
-          // console.log('user login :', user);
-          // getData('user').then(result => console.log('dataLocal :', result));
         }
       });
     }, 3000);

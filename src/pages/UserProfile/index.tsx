@@ -2,11 +2,10 @@ import {StyleSheet, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Gap, Header, List, Profile} from '../../components';
 import {NavigationPropsStack} from '../../../declarations';
-import {colors, getData} from '../../utils';
+import {getData, showError} from '../../utils';
 import {ILemptyprofileImage} from '../../assets';
 import {auth} from '../../config';
 import {signOut} from 'firebase/auth';
-import {showMessage} from 'react-native-flash-message';
 
 const UserProfile = ({navigation}: NavigationPropsStack) => {
   const [profile, setProfile] = useState({
@@ -26,16 +25,11 @@ const UserProfile = ({navigation}: NavigationPropsStack) => {
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
-        console.log('Success sign out');
+        // Jika signout sukses, menavigasi ke getstarted
         navigation.replace('GetStarted');
       })
       .catch(error => {
-        showMessage({
-          message: error.message,
-          type: 'default',
-          backgroundColor: colors.error,
-          color: colors.white,
-        });
+        showError(error.message);
       });
   };
 
