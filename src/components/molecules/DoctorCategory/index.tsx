@@ -1,5 +1,6 @@
 import {
   GestureResponderEvent,
+  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -7,6 +8,7 @@ import {
 import React from 'react';
 import {ILcatdokobat, ILcatdokpsikiater, ILcatdokumum} from '../../../assets';
 import {colors, fonts} from '../../../utils';
+import {SvgUri} from 'react-native-svg';
 
 interface DoctorCategoryProps {
   category: string;
@@ -19,18 +21,9 @@ const DoctorCategory: React.FC<DoctorCategoryProps> = ({
   picture,
   onPress,
 }) => {
-  const Icon = () => {
-    if (picture === 'ILcatdokumum')
-      return <ILcatdokumum style={styles.illustration} />;
-    if (picture === 'ILcatdokpsikiater')
-      return <ILcatdokpsikiater style={styles.illustration} />;
-    if (picture === 'ILcatdokobat')
-      return <ILcatdokobat style={styles.illustration} />;
-  };
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      {/* <ILcatdokumum style={styles.illustration} /> */}
-      <Icon />
+      <SvgUri uri={picture} style={styles.illustration} />
       <Text style={styles.label}>Saya butuh</Text>
       <Text style={styles.category}>{category}</Text>
     </TouchableOpacity>

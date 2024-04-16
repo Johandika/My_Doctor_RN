@@ -8,7 +8,7 @@ import {
   RatedDoctor,
 } from '../../components';
 import {colors, fonts, showError} from '../../utils';
-import {dataDoctor, dataDoctorCategory} from '../../assets';
+import {dataDoctor} from '../../assets';
 import {NavigationPropsStack} from '../../../declarations';
 import {child, get} from 'firebase/database';
 import {dbRef} from '../../config';
@@ -20,14 +20,31 @@ interface NewsItem {
   id: number;
 }
 
+interface CategoryItem {
+  id: number;
+  category: string;
+  picture: string;
+}
+
 const Doctor = ({navigation}: NavigationPropsStack) => {
   const [news, setNews] = useState<NewsItem[]>([]);
+  const [categoryDoctor, setCategoryDoctor] = useState<CategoryItem[]>([]);
 
   useEffect(() => {
     get(child(dbRef, `news/`))
       .then(snapshot => {
         if (snapshot.exists()) {
           setNews(snapshot.val());
+        }
+      })
+      .catch(err => {
+        showError(err.message);
+      });
+
+    get(child(dbRef, `category_doctor/`))
+      .then(snapshot => {
+        if (snapshot.exists()) {
+          setCategoryDoctor(snapshot.val());
         }
       })
       .catch(err => {
@@ -50,7 +67,7 @@ const Doctor = ({navigation}: NavigationPropsStack) => {
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={styles.category}>
                 <Gap size={32} direction="horizontal" />
-                {dataDoctorCategory.map(category => (
+                {categoryDoctor.map(category => (
                   <DoctorCategory
                     key={category.id}
                     category={category.category}
