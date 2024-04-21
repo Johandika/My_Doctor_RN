@@ -56,6 +56,7 @@ const getStyles = <T extends HeaderProps>(type: T['type']) => {
       fontSize: 20,
       color: type === 'dark' ? colors.white : colors.text.primary,
       textAlign: 'center',
+      textTransform: 'capitalize',
     },
   });
 };

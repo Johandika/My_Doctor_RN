@@ -85,8 +85,17 @@ const Doctor = ({navigation}: NavigationPropsStack) => {
     get(doctorsQuery)
       .then(snapshot => {
         if (snapshot.exists()) {
-          setTopRatedDoctors(snapshot.val());
-          console.log('top 3  doctors :', snapshot.val());
+          const oldData = snapshot.val();
+          const data = [];
+
+          Object.keys(oldData).map(item => {
+            data.push({
+              id: item,
+              data: oldData[item],
+            });
+          });
+
+          setTopRatedDoctors(data);
         }
       })
       .catch(err => {
@@ -115,7 +124,9 @@ const Doctor = ({navigation}: NavigationPropsStack) => {
                     key={category.id}
                     category={category.category}
                     picture={category.picture}
-                    onPress={() => navigation.navigate('ChooseDoctor')}
+                    onPress={() =>
+                      navigation.navigate('ChooseDoctor', category)
+                    }
                   />
                 ))}
 
@@ -127,11 +138,11 @@ const Doctor = ({navigation}: NavigationPropsStack) => {
             <Text style={styles.sectionLabel}>Top rated Doctors</Text>
             {topRatedDoctors.map(doctor => (
               <RatedDoctor
-                key={doctor.uid}
-                category={doctor.category}
-                name={doctor.fullName}
-                picture={doctor.photo}
-                rate={doctor.rate}
+                key={doctor.id}
+                category={doctor.data.category}
+                name={doctor.data.fullName}
+                picture={doctor.data.photo}
+                rate={doctor.data.rate}
                 onPress={() => navigation.navigate('DoctorProfile', doctor)}
               />
             ))}

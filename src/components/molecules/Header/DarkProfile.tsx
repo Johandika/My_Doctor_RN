@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.primary[600],
     color: colors.white,
     textAlign: 'center',
+    textTransform: 'capitalize',
   },
   desc: {
     fontSize: 14,
