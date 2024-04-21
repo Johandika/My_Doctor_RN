@@ -3,7 +3,6 @@ import {
   Text,
   View,
   Image,
-  ImageSourcePropType,
   TouchableOpacity,
   GestureResponderEvent,
 } from 'react-native';
@@ -14,8 +13,9 @@ import {colors, fonts} from '../../../utils';
 interface RatedDoctor {
   category: string;
   name: string;
-  picture: ImageSourcePropType;
+  picture: string;
   onPress: (event: GestureResponderEvent) => void;
+  rate: number;
 }
 
 const RatedDoctor: React.FC<RatedDoctor> = ({
@@ -23,21 +23,26 @@ const RatedDoctor: React.FC<RatedDoctor> = ({
   category,
   picture,
   onPress,
+  rate,
 }) => {
+  const renderStars = () => {
+    const stars = [];
+
+    for (let i = 1; i <= rate; i++) {
+      stars.push(<IconStar key={i} width={12} height={12} />);
+    }
+
+    return stars;
+  };
+
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Image source={picture} style={styles.avatar} />
+      <Image source={{uri: picture}} style={styles.avatar} />
       <View style={styles.profile}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.category}>{category}</Text>
       </View>
-      <View style={styles.rate}>
-        <IconStar width={12} height={12} />
-        <IconStar width={12} height={12} />
-        <IconStar width={12} height={12} />
-        <IconStar width={12} height={12} />
-        <IconStar width={12} height={12} />
-      </View>
+      <View style={styles.rate}>{renderStars()}</View>
     </TouchableOpacity>
   );
 };

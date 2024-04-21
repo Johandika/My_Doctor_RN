@@ -8,10 +8,16 @@ import {
   RatedDoctor,
 } from '../../components';
 import {colors, fonts, showError} from '../../utils';
-import {dataDoctor} from '../../assets';
 import {NavigationPropsStack} from '../../../declarations';
-import {child, get} from 'firebase/database';
-import {dbRef} from '../../config';
+import {
+  child,
+  get,
+  limitToLast,
+  orderByChild,
+  query,
+  ref,
+} from 'firebase/database';
+import {database, dbRef} from '../../config';
 
 interface NewsItem {
   title: string;
@@ -26,11 +32,26 @@ interface CategoryItem {
   picture: string;
 }
 
+interface RatedDoctors {
+  uid: string;
+  category: string;
+  fullName: string;
+  photo: string;
+  rate: number;
+}
+
 const Doctor = ({navigation}: NavigationPropsStack) => {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [categoryDoctor, setCategoryDoctor] = useState<CategoryItem[]>([]);
+  const [topRatedDoctors, setTopRatedDoctors] = useState<RatedDoctors[]>([]);
 
   useEffect(() => {
+    getCategoryDoctor();
+    getTopRatedDoctors();
+    getNews();
+  }, []);
+
+  const getNews = () => {
     get(child(dbRef, `news/`))
       .then(snapshot => {
         if (snapshot.exists()) {
@@ -40,7 +61,9 @@ const Doctor = ({navigation}: NavigationPropsStack) => {
       .catch(err => {
         showError(err.message);
       });
+  };
 
+  const getCategoryDoctor = () => {
     get(child(dbRef, `category_doctor/`))
       .then(snapshot => {
         if (snapshot.exists()) {
@@ -50,7 +73,27 @@ const Doctor = ({navigation}: NavigationPropsStack) => {
       .catch(err => {
         showError(err.message);
       });
-  }, []);
+  };
+
+  const getTopRatedDoctors = () => {
+    const doctorsQuery = query(
+      ref(database, 'doctors/'),
+      orderByChild('rate'),
+      limitToLast(3),
+    );
+
+    get(doctorsQuery)
+      .then(snapshot => {
+        if (snapshot.exists()) {
+          setTopRatedDoctors(snapshot.val());
+          console.log('top 3  doctors :', snapshot.val());
+        }
+      })
+      .catch(err => {
+        showError(err.message);
+        console.log('gagal getTopRatedDoctors');
+      });
+  };
 
   return (
     <View style={styles.page}>
@@ -82,13 +125,14 @@ const Doctor = ({navigation}: NavigationPropsStack) => {
           </View>
           <View style={styles.wrapperSection}>
             <Text style={styles.sectionLabel}>Top rated Doctors</Text>
-            {dataDoctor.map(doctor => (
+            {topRatedDoctors.map(doctor => (
               <RatedDoctor
-                key={doctor.id}
+                key={doctor.uid}
                 category={doctor.category}
-                name={doctor.name}
-                picture={doctor.picture}
-                onPress={() => navigation.navigate('DoctorProfile')}
+                name={doctor.fullName}
+                picture={doctor.photo}
+                rate={doctor.rate}
+                onPress={() => navigation.navigate('DoctorProfile', doctor)}
               />
             ))}
 
